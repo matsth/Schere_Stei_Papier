@@ -1,15 +1,16 @@
+import sys
+import io
+import time
 import random as rng
 import numpy as np
+from PIL import Image, ImageOps
 import pygame.camera
 import pygame.image
-import sys
 import tensorflow
 from tensorflow import keras
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from PIL import Image, ImageOps
-import io
-import time
+
 
 #AI
 #------------------------------------------------------------------
