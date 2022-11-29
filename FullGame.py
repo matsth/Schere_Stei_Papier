@@ -1,6 +1,7 @@
 import sys
 import io
 import time
+import math
 import random as rng
 import numpy as np
 from PIL import Image, ImageOps
@@ -18,11 +19,28 @@ global aichoice
 global aibehaviorlearning
 global aibehavior
 
+learningfactorwin = 3
+learningfactorlose = -3
+learningfactordraw = 0
+
+#Set up Fitst Array
+#0 = Random()
+#1 = Copycat()
+#2 = Counterlose()
+#3 = CounterCounterwin()
+#4 = Countermosteplayed()
+aibehaviorlearning = np.array([1, 60, 60, 60, 60, 60])
+
+aibehavior = 0
+
 #AIinfos
 #------------------------------------------------------------------
 global userchoice
 global lastwon
 global moveused
+
+moveused = np.array([0, 0, 0])
+lastwon = None
 
 #Import Model and set size of img
 #------------------------------------------------------------------
@@ -32,7 +50,6 @@ model = keras.models.load_model(file, compile=False)
 
 global size
 size = (224, 224)
-
 size2 = (448, 448)
 
 #Rest
@@ -40,23 +57,11 @@ size2 = (448, 448)
 aiWins = 0
 playerWins = 0
 draws = 0
-lastwon = None
-aibehavior = 0
 
 #0 = Schere
 #1 = Stein
 #2 = Papier
 numbertonamearr = ['Schere', 'Stein', 'Papier']
-
-#Set up Fitst Array
-#0 = Random()
-#1 = Copycat()
-#2 = Counterlose()
-#3 = CounterCounterwin()
-#4 = Countermosteplayed()
-aibehaviorlearning = np.array([1, 30, 30, 30, 30, 30])
-
-moveused = np.array([0, 0, 0])
 
 
 #AI behavior
@@ -228,12 +233,9 @@ Random()
 leave = 0
 error = 0
 result = ''
-learningfactorwin = 2
-learningfactorlose = -2
-learningfactordraw = 0
 textevent = font2.render(result, True, (0, 0, 255))
 
-t_offset = 1
+t_offset = 0.1
 t_offset2 = 5
 
 t_end = time.time()
@@ -259,19 +261,20 @@ while running:
         if(resultMachine == 0):
             userchoice = 0
             resultMachinetext = 'Schere'
+            t_end = time.time() + t_offset
         elif(resultMachine == 1):
             userchoice = 1
             resultMachinetext = 'Stein'
+            t_end = time.time() + t_offset
         elif(resultMachine == 2):
             userchoice = 2
             resultMachinetext = 'Papier'
+            t_end = time.time() + t_offset
         else:
             error = 1
             resultMachinetext = 'Ungültige eingabe!'
         
         textsurface = font.render(resultMachinetext, True, (0, 0, 255))
-        timetext = font.render(str(round(t_end2 - time.time())), True, (0, 0, 255))
-        t_end = time.time() + t_offset
 
     #Actual Game
     if (error < 1 and time.time() >= t_end2):
@@ -339,6 +342,7 @@ while running:
         
         textevent = font2.render(result, True, (0, 0, 255))
 
+    timetext = font.render(str(math.ceil(t_end2 - time.time())), True, (0, 0, 255))
     # draw frame
     screen.blit(imggame, (0,0))
     screen.blit(textsurface, (20, 20))
