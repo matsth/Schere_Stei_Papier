@@ -19,9 +19,9 @@ global aichoice
 global aibehaviorlearning
 global aibehavior
 
-learningfactorwin = 3
-learningfactorlose = -3
-learningfactordraw = -1
+learningfactorwin = 100
+learningfactorlose = -60
+learningfactordraw = -40
 
 #Set up AI Array
 #0 = Random()
@@ -30,7 +30,7 @@ learningfactordraw = -1
 #3 = Counterlose()
 #4 = CounterCounterwin()
 #5 = Countermosteplayed()
-aibehaviorlearning = np.array([1, 60, 60, 60, 60, 60])
+aibehaviorlearning = np.array([1, 300, 300, 300, 300, 300])
 
 aibehavior = 0
 
@@ -273,75 +273,78 @@ while running:
             t_end = time.time() + t_offset
         else:
             error = 1
-            resultMachinetext = 'Ungültige eingabe!'
+            resultMachinetext = 'Keine eingabe!'
         
         textsurface = font.render(resultMachinetext, True, (0, 0, 255))
 
     #Actual Game
-    if (error < 1 and time.time() >= t_end2):
-        match aichoice:
-            case 0:
-                match userchoice:
-                    case 0:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
-                        moveused[userchoice] += 1
-                        draws += 1
-                        AIlearning(learningfactordraw)
-                    case 1:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
-                        moveused[userchoice] += 1
-                        playerWins += 1
-                        lastwon = userchoice
-                        AIlearning(learningfactorlose)
-                    case 2:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' KI gewinnst!'
-                        moveused[userchoice] += 1
-                        aiWins += 1
-                        lastwon = aichoice
-                        AIlearning(learningfactorwin)
-            case 1:
-                match userchoice:
-                    case 0:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' KI gewinnst!'
-                        moveused[userchoice] += 1
-                        aiWins += 1
-                        lastwon = aichoice
-                        AIlearning(learningfactorwin)
-                    case 1:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
-                        moveused[userchoice] += 1
-                        draws += 1
-                        AIlearning(learningfactordraw)
-                    case 2:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
-                        moveused[userchoice] += 1
-                        playerWins += 1
-                        lastwon = userchoice
-                        AIlearning(learningfactorlose)
-            case 2:
-                match userchoice:
-                    case 0:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
-                        moveused[userchoice] += 1
-                        playerWins += 1
-                        lastwon = userchoice
-                        AIlearning(learningfactorlose)
-                    case 1:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Ki gewinnst!'
-                        moveused[userchoice] += 1
-                        aiWins += 1
-                        lastwon = aichoice
-                        AIlearning(learningfactorwin)
-                    case 2:
-                        result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
-                        moveused[userchoice] += 1
-                        draws += 1
-                        AIlearning(learningfactordraw)
+    if (time.time() >= t_end2):
+        if (error < 1):
+            match aichoice:
+                case 0:
+                    match userchoice:
+                        case 0:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
+                            moveused[userchoice] += 1
+                            draws += 1
+                            AIlearning(learningfactordraw)
+                        case 1:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
+                            moveused[userchoice] += 1
+                            playerWins += 1
+                            lastwon = userchoice
+                            AIlearning(learningfactorlose)
+                        case 2:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' KI gewinnst!'
+                            moveused[userchoice] += 1
+                            aiWins += 1
+                            lastwon = aichoice
+                            AIlearning(learningfactorwin)
+                case 1:
+                    match userchoice:
+                        case 0:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' KI gewinnst!'
+                            moveused[userchoice] += 1
+                            aiWins += 1
+                            lastwon = aichoice
+                            AIlearning(learningfactorwin)
+                        case 1:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
+                            moveused[userchoice] += 1
+                            draws += 1
+                            AIlearning(learningfactordraw)
+                        case 2:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
+                            moveused[userchoice] += 1
+                            playerWins += 1
+                            lastwon = userchoice
+                            AIlearning(learningfactorlose)
+                case 2:
+                    match userchoice:
+                        case 0:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Du gewinnst!'
+                            moveused[userchoice] += 1
+                            playerWins += 1
+                            lastwon = userchoice
+                            AIlearning(learningfactorlose)
+                        case 1:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' Ki gewinnst!'
+                            moveused[userchoice] += 1
+                            aiWins += 1
+                            lastwon = aichoice
+                            AIlearning(learningfactorwin)
+                        case 2:
+                            result = 'Du wählst ' + numbertonamearr[userchoice] + ', KI wählt ' + numbertonamearr[aichoice] + ' unentschieden!'
+                            moveused[userchoice] += 1
+                            draws += 1
+                            AIlearning(learningfactordraw)
 
-        ChooseAI()
+            ChooseAI()
+        
+            textevent = font2.render(result, True, (0, 0, 255))
+
         t_end2 = time.time() + t_offset2
         
-        textevent = font2.render(result, True, (0, 0, 255))
 
     timetext = font.render(str(math.ceil(t_end2 - time.time())), True, (0, 0, 255))
     # draw frame
