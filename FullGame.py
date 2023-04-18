@@ -237,7 +237,7 @@ result = ''
 textevent = font2.render(result, True, (0, 0, 255))
 
 t_offset = 0.1
-t_offset2 = 5
+t_offset2 = 7
 
 t_end = time.time()
 t_end2 = time.time() + t_offset2
@@ -357,15 +357,19 @@ while running:
     # grab next frame    
     imggame = cam.get_image()
 
+print('-----------------------------------------------------')
 print('AI wins: ' + str(aiWins))
 print('Player wins: ' + str(playerWins))
 print('Draws: ' + str(draws))
+print('-----------------------------------------------------')
 print('Random(): ' + str(aibehaviorlearning[0]))
 print('Copycat(): ' + str(aibehaviorlearning[1]))
 print('Winlast(): ' + str(aibehaviorlearning[2]))
 print('Counterlose(): ' + str(aibehaviorlearning[3]))
 print('CounterCounterwin(): ' + str(aibehaviorlearning[4]))
 print('Countermosteplayed(): ' + str(aibehaviorlearning[5]))
+print('-----------------------------------------------------')
+print('Player:')
 print(numbertonamearr[0] + ': ' + str(moveused[0]))
 print(numbertonamearr[1] + ': ' + str(moveused[1]))
 print(numbertonamearr[2] + ': ' + str(moveused[2]))
